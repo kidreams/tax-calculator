@@ -1,6 +1,5 @@
 import inspect
-# from main import TaxCalculator
-from main__ import TaxCalculator
+from main import TaxCalculator
 
 class TaxCalculator_Test():
 
