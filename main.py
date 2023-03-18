@@ -1,7 +1,7 @@
 class TaxCalculator:
     def __init__(self, income, is_married=False):
-        if not isinstance(income, (int,)) or income < 0:
-            raise ValueError("Income must be a non-negative integer.")
+        self._validate_is_number(income)
+        income = max(0, int(income))
         self.income = income
         self.is_married = is_married
         self.allowance = 132000 if not is_married else 264000
@@ -28,20 +28,23 @@ class TaxCalculator:
         print(f"{income_type} Total payable tax amount:", int(total_tax))
 
     def calculate_joint_tax(self, spouse_income):
-        if not isinstance(spouse_income, (int, float)) or spouse_income < 0:
-            raise ValueError("Spouse income must be a non-negative number.")
+        self._validate_is_number(spouse_income)
+        spouse_income = max(0, int(spouse_income))
         joint_calculator = TaxCalculator(self.income + spouse_income, is_married=True)
         joint_calculator.mpf = min(self.income * 0.05, 18000) + min(spouse_income * 0.05, 18000)
         joint_calculator.taxable_income = joint_calculator.income - joint_calculator.allowance - joint_calculator.mpf
         return joint_calculator.calculate_tax()
 
     def joint_tax_saving(self, spouse_income):
-        if not isinstance(spouse_income, (int, float)) or spouse_income < 0:
-            raise ValueError("Spouse income must be a non-negative number.")
+        self._validate_is_number(spouse_income)
+        spouse_income = max(0, int(spouse_income))
         joint_tax = self.calculate_joint_tax(spouse_income)
         calculator_spouse = TaxCalculator(spouse_income, is_married=False)
         return (self.calculate_tax() + calculator_spouse.calculate_tax()) - joint_tax
 
+    def _validate_is_number(self, input):
+        try_number = float(input) if str(input).isdigit() else None
+        assert try_number is not None, f"\n❌ input -> \"{input}\" isn't a number"
 
 def input_income(prompt):
     while True:
