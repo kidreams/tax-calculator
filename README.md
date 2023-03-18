@@ -21,6 +21,14 @@ conda create --name tax-calculator python=3.10
 ## OR
 
 ```bash
+# Easy create environment at default folder (in anaconda installation location)
+# * specific environment name with either argument -n | --name
+conda env create --file tax-calculator.yml python=3.10
+```
+
+## OR
+
+```bash
 # Easy create environment at specific path
 conda create --prefix ./venv python=3.10
 ```
